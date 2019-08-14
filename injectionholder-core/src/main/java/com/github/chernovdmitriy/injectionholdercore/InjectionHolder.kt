@@ -4,26 +4,22 @@ import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
 import com.github.chernovdmitriy.injectionholdercore.registry.LifecycleCallbacksRegistry
 import com.github.chernovdmitriy.injectionholdercore.storage.ComponentsStore
 
-abstract class InjectionHolder<ApplicationType> protected constructor(
+abstract class InjectionHolder<ApplicationType>(
     private val lifecycleCallbacksRegistry: LifecycleCallbacksRegistry<ApplicationType>
 ) {
 
     private val componentsStore by lazy { ComponentsStore() }
 
-    private val componentCallback: ComponentCallback by lazy {
-        ComponentCallback(componentsStore)
-    }
+    private val componentCallback: ComponentCallback by lazy { ComponentCallback(componentsStore) }
 
-    protected fun init(application: ApplicationType) {
+    protected fun init(application: ApplicationType) =
         lifecycleCallbacksRegistry.registerLifecycleCallbacks(application, componentCallback)
-    }
 
-    fun removeComponent(componentClass: Class<*>) = componentsStore.remove(componentClass)
+    fun removeComponent(componentClass: Class<*>) = componentCallback.removeComponent(componentClass)
 
-    fun <T> clearComponent(owner: ComponentOwner<T>) = componentCallback.clearComponent(owner)
+    fun <T> removeComponent(owner: ComponentOwner<T>) = componentCallback.removeComponent(owner)
 
-    fun <T> getComponent(owner: ComponentOwner<T>): T =
-        componentCallback.getComponent(owner)
+    fun <T> getComponent(owner: ComponentOwner<T>): T = componentCallback.initOrGetComponent(owner)
 
     fun <T> getComponentOwnerLifeCycle(componentOwner: ComponentOwner<T>): ComponentOwnerLifecycle =
         componentCallback.getCustomOwnerLifecycle(componentOwner)

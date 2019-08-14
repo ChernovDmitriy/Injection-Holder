@@ -2,7 +2,7 @@ package com.github.chernovdmitriy.injectionholdercore.storage
 
 import com.github.chernovdmitriy.injectionholdercore.ComponentNotFoundException
 
-class ComponentsStore {
+internal class ComponentsStore {
 
     private val components = mutableMapOf<String, Any>()
 

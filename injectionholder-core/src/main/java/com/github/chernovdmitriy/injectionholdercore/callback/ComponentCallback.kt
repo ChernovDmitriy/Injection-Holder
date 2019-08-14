@@ -4,18 +4,15 @@ import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.ComponentOwnerLifecycle
 import com.github.chernovdmitriy.injectionholdercore.storage.ComponentsStore
 
-class ComponentCallback(private val componentsStore: ComponentsStore) {
+class ComponentCallback internal constructor(private val componentsStore: ComponentsStore) {
 
     fun <T> addInjection(componentOwner: ComponentOwner<T>) {
-        val component = getComponent(componentOwner)
+        val component = initOrGetComponent(componentOwner)
         componentOwner.inject(component)
     }
 
-    fun <T> removeInjection(componentOwner: ComponentOwner<T>) {
+    fun <T> removeInjection(componentOwner: ComponentOwner<T>) =
         componentsStore.remove(componentOwner.getComponentKey())
-    }
-
-    fun <T> getComponent(owner: ComponentOwner<T>) = initOrGetComponent(owner)
 
     fun <T> getCustomOwnerLifecycle(owner: ComponentOwner<T>): ComponentOwnerLifecycle {
         return object : ComponentOwnerLifecycle {
@@ -38,13 +35,13 @@ class ComponentCallback(private val componentsStore: ComponentsStore) {
         }
     }
 
+    fun <T> removeComponent(componentClass: Class<T>) = componentsStore.remove(componentClass)
 
-    fun <T> clearComponent(componentOwner: ComponentOwner<T>) {
+    fun <T> removeComponent(componentOwner: ComponentOwner<T>) =
         componentsStore.remove(componentOwner.getComponentKey())
-    }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T> initOrGetComponent(owner: ComponentOwner<T>): T {
+    fun <T> initOrGetComponent(owner: ComponentOwner<T>): T {
         val ownerKey = owner.getComponentKey()
 
         return if (componentsStore.isExist(ownerKey)) {

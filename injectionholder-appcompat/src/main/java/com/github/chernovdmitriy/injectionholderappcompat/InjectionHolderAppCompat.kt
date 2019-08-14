@@ -5,7 +5,8 @@ import com.github.chernovdmitriy.injectionholdercore.InjectionHolder
 import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
 import com.github.chernovdmitriy.injectionholdercore.registry.LifecycleCallbacksRegistry
 
-class InjectionHolderAppCompat private constructor(): InjectionHolder<Application>(LifecycleCallbacksRegistryImpl()) {
+class InjectionHolderAppCompat private constructor() :
+    InjectionHolder<Application>(AppCompatLifecycleCallbacksRegistry()) {
 
     companion object {
         @JvmStatic
@@ -14,10 +15,9 @@ class InjectionHolderAppCompat private constructor(): InjectionHolder<Applicatio
         fun init(application: Application) = instance.init(application)
     }
 
-    private class LifecycleCallbacksRegistryImpl : LifecycleCallbacksRegistry<Application> {
-        override fun registerLifecycleCallbacks(app: Application, componentCallback: ComponentCallback) {
+    private class AppCompatLifecycleCallbacksRegistry : LifecycleCallbacksRegistry<Application> {
+        override fun registerLifecycleCallbacks(app: Application, componentCallback: ComponentCallback) =
             app.registerActivityLifecycleCallbacks(ActivityAppCompatLifecycleCallback(componentCallback))
-        }
     }
 
 }
