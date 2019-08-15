@@ -1,0 +1,20 @@
+ext {
+    bintrayRepo = 'InjectionHolder'
+
+    publishedGroupId = 'com.github.chernovdmitriy.injectionholder'
+
+    libraryDescription = 'Manages the dagger component lifecycle'
+
+    siteUrl = 'https://github.com/ChernovDmitriy/Injection-Holder'
+    gitUrl = 'https://github.com/ChernovDmitriy/Injection-Holder.git'
+
+    libraryVersion = project.getVersionName()
+
+    developerId = 'ChernovDmitriy'
+    developerName = 'Dmitriy Chernov'
+    developerEmail = 'dimchik.chernov@gmail.com'
+
+    licenseName = 'MIT License'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}

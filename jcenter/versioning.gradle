@@ -1,0 +1,17 @@
+int versionMajor = 1
+int versionMinor = 0
+int versionPatch = 0
+boolean isSnapshot = false
+
+ext.getVersionCode = {
+    int versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+    return versionCode
+}
+
+ext.getVersionName = {
+    String versionName = "${versionMajor}.${versionMinor}.${versionPatch}"
+    if (isSnapshot) {
+        versionName += "-SNAPSHOT"
+    }
+    return versionName
+}

@@ -1,0 +1,7 @@
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
+apply from: rootProject.file('jcenter/maven-install.gradle')
+
+apply from: rootProject.file('jcenter/bintray.gradle')
