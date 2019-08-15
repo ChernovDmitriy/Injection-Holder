@@ -1,5 +1,12 @@
 apply plugin: 'java'
 apply plugin: 'kotlin'
+apply from: "$rootDir/jcenter/versioning.gradle"
+
+ext {
+    bintrayName = 'Core'
+    libraryName = 'Core'
+    artifact = 'core'
+}
 
 
 sourceCompatibility = "1.7"
@@ -25,3 +32,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
+
+apply from: "$rootDir/jcenter/info.gradle"
+apply from: "$rootDir/publish.gradle"

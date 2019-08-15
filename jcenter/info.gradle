@@ -3,7 +3,7 @@ ext {
 
     publishedGroupId = 'com.github.chernovdmitriy.injectionholder'
 
-    libraryDescription = 'Manages the dagger component lifecycle'
+    libraryDescription = 'Library for holding Dependencies at Activity/Fragment lifecycle (also can include custom components)'
 
     siteUrl = 'https://github.com/ChernovDmitriy/Injection-Holder'
     gitUrl = 'https://github.com/ChernovDmitriy/Injection-Holder.git'
