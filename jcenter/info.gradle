@@ -3,7 +3,7 @@ ext {
 
     publishedGroupId = 'com.github.chernovdmitriy.injectionholder'
 
-    libraryDescription = 'Library for holding Dependencies at Activity/Fragment lifecycle (also can include custom components)'
+    libraryDescription = 'Library for holding dependencies at Activity/Fragment lifecycle (also can use in any objects)'
 
     siteUrl = 'https://github.com/ChernovDmitriy/Injection-Holder'
     gitUrl = 'https://github.com/ChernovDmitriy/Injection-Holder.git'
