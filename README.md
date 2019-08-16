@@ -68,7 +68,9 @@ class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
 
 ```
 
-And it's all what you need! You're welcome ;)
+And that's all what you need! 
+
+You're welcome ;)
 
 
 **AppCompat**
