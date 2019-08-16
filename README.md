@@ -20,38 +20,41 @@ Finally, you can use it in any objects, that can be recreate
 ## Getting started
 
 **AndroidX**
+Let's look at the sample
 
 ```gradle
 implementation 'com.github.chernovdmitriy.injectionholder:androidx:LATEST_VERSION'
 ```
+Let's look at the sample
+
 First of all, you should register Activity/Fragment lifecycle callbacks at your application start
 
-Then you can just implements `ComponentOwner<DiComponentType>` in your Fragment/Activity
-
-If you use _Java_ and/or Activity/Fragment instances of one class in one time, you should override method `getComponentKey()` of `ComponentOwner`
-
-Let's look at the sample
 ```kotlin
-
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         InjectionHolderX.init(this)
     }
 }
+```
 
+Then you can just implements `ComponentOwner<DiComponentType>` in your Fragment/Activity
+```kotlin
 class MyFragment : Fragment(), ComponentOwner<SubComponent> {
-
-     override fun inject(subComponent: SubComponent) = subComponent.inject(this)
+    override fun inject(subComponent: SubComponent) = subComponent.inject(this)
  
-     override fun provideComponent(): SubComponent {
-         return InjectionHolderX.instance
-             .findComponent(ParentComponent::class.java)
-             .subComponentBuilder()
-             .build()
-     }
+    override fun provideComponent(): SubComponent {
+        return InjectionHolderX.instance
+            .findComponent(ParentComponent::class.java)
+            .subComponentBuilder()
+            .build()
+    }
 }
+```
 
+If you use _Java_ and/or Activity/Fragment instances of one class in one time, you should override method `getComponentKey()` of `ComponentOwner`
+
+```kotlin
 class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
 
     override fun inject(subOfSubComponent: SubOfSubComponent) = subOfSubComponent.inject(this)
@@ -64,7 +67,6 @@ class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
     }
     
     override fun getComponentKey() = arguments?.getString(SomeFeatureData.EXTRA) ?: javaClass.toString()
-
 }
 
 ```
@@ -78,7 +80,7 @@ And it's all what you need! You're welcome ;)
 implementation 'com.github.chernovdmitriy.injectionholder:appcompat:LATEST_VERSION'
 ```
 
-Using of _AppCompat_ is idential to _AndroidX_ except _InjectionHolder_ object. You just call `InjectionHolderAppCompat` instead of `InjectionHolderX`
+Using of _AppCompat_ is identical to _AndroidX_ except _InjectionHolder_ object. You just call `InjectionHolderAppCompat` instead of `InjectionHolderX`
 
 
 **Java/Kotlin**
