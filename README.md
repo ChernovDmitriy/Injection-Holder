@@ -21,7 +21,6 @@ That's not all! :) You can use it in your _custom views_ and any objects, that c
 
 ```gradle
 implementation 'com.github.chernovdmitriy.injectionholder:androidx:LATEST_VERSION'
-
 ```
 First of all, you should register Activity/Fragment lifecycle callbacks at your application start
 
