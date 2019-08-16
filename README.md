@@ -33,8 +33,8 @@ Let's look at the sample
 ```kotlin
 
 class MyApplication : Application() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate() {
+        super.onCreate()
         InjectionHolderX.init(this)
     }
 }
@@ -51,18 +51,18 @@ class MyFragment : Fragment(), ComponentOwner<SubComponent> {
      }
 }
 
-class BaseFragment : Fragment(), ComponentOwner<SubComponent> {
+class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
 
-    override fun inject(subComponent: SubComponent) = subComponent.inject(this)
+    override fun inject(subOfSubComponent: SubOfSubComponent) = subOfSubComponent.inject(this)
  
-    override fun provideComponent(): SubComponent {
+    override fun provideComponent(): SubOfSubComponent {
         return InjectionHolderX.instance
-            .findComponent(ParentComponent::class.java)
-            .subComponentBuilder()
+            .findComponent(SubComponent::class.java)
+            .subOfSubComponentBuilder()
             .build()
     }
     
-    override fun getComponentKey() = arguments?.getString(SomeData.EXTRA) ?: javaClass.toString()
+    override fun getComponentKey() = arguments?.getString(SomeFeatureData.EXTRA) ?: javaClass.toString()
 
 }
 
@@ -91,7 +91,7 @@ Your components will be store automatically (the logic of it you should realize 
 ```
 The MIT License (MIT)
 
-Copyright (c) 2016 Arello Mobile
+Copyright (c) 2019 Chernov Dmitriy
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
