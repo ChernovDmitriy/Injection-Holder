@@ -4,8 +4,7 @@
 
 `Injection Holder` is a lightweight library that helps _DI components_ (such as Dagger2 components) to stay alive during Activity/Fragment lifecycle. 
 
-Also you don't have worry about storing your DI components and operations with them such as adding/getting/removing.
-Just inject it!
+Also you don't have worry about storing your DI components and operations with them such as adding/getting/removing etc.
 
 Finally, you can use it in any objects, that can be recreate
 
@@ -20,7 +19,6 @@ Finally, you can use it in any objects, that can be recreate
 ## Getting started
 
 **AndroidX**
-Let's look at the sample
 
 ```gradle
 implementation 'com.github.chernovdmitriy.injectionholder:androidx:LATEST_VERSION'
