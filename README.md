@@ -2,15 +2,15 @@
 ![VERSION](https://api.bintray.com/packages/chernovdmitriy/InjectionHolder/InjectionHolder/images/download.svg)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
 
-_Injection Holder_ is a lightweight library that helps to to save _DI components_ (like Dagger2 components) and any other objects. 
+`Injection Holder` is a lightweight library that helps to to save _DI components_ (sush as Dagger2 components) and any other objects. 
 Also it can use for saving any objects in _Activity/Fragment_ (with LifecycleCallback help)
-That's not all! You can use it in _custom views_ and another not platform objects, that can recreate
-_Lightweight library without code generation
+
+That's not all! You can use it in your _custom views_ and any objects, that can be recreate
 
 ## Capabilities
 _Injection Holder_ has next features:
 - _DI Component_ stay alive when _Activity/Fragment_ recreated
-- Automatic creating and destroying of DI component in Activity/Fragment without boilerplate code
+- Automatic creating and destroying of _DI component_ in Activity/Fragment without boilerplate code
 - Also available for using in custom views
 - Support of _AppCompat_ & _AndroidX_
 - Can use in _Java_ modules
@@ -25,9 +25,9 @@ implementation 'com.github.chernovdmitriy.injectionholder:androidx:LATEST_VERSIO
 ```
 First of all, you should register Activity/Fragment lifecycle callbacks at your application start
 
-Then you can just implements ComponentOwner<DiComponentType> in your Fragment/Activity
+Then you can just implements `ComponentOwner<DiComponentType>` in your Fragment/Activity
 
-If you use Java and/or Activity/Fragment instances of one class in one time, than you should overrides method _getComponentKey()_ of _ComponentOwner_
+If you use _Java_ and/or Activity/Fragment instances of one class in one time, than you should overrides method `getComponentKey()` of _ComponentOwner_
 
 Let's look at the sample
 ```kotlin
@@ -76,15 +76,15 @@ And it's all what you need! You're welcome ;)
 implementation 'com.github.chernovdmitriy.injectionholder:appcompat:LATEST_VERSION'
 ```
 
-Using of _AppCompat_ is idential to _AndroidX_ except InjectionHolder object. You just call _InjectionHolderAppCompat_ instead of _InjectionHolderX_
+Using of _AppCompat_ is idential to _AndroidX_ except InjectionHolder object. You just call `InjectionHolderAppCompat` instead of `InjectionHolderX`
 
 **Java/Kotlin**
 ```gradle
 implementation 'com.github.chernovdmitriy.injectionholder:core:LATEST_VERSION'
 ```
 
-You should realize class _InjectionHolder_ and use it in your application instance
-Your components will be store automatically (the logic of it you should realize in _LifecycleCallbacksRegistry_)
+You should realize class `InjectionHolder` and use it in your application instance
+Your components will be store automatically (the logic of it you should realize in `LifecycleCallbacksRegistry`)
 
 
 ## License
