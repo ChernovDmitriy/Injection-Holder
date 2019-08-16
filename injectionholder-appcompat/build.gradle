@@ -4,8 +4,8 @@ apply plugin: 'kotlin-android'
 apply from: "$rootDir/jcenter/versioning.gradle"
 
 ext {
-    bintrayName = 'InjectionHolder AppCompat'
-    libraryName = 'InjectionHolder AppCompat'
+    bintrayName = 'InjectionHolder-AppCompat'
+    libraryName = 'InjectionHolder-AppCompat'
     artifact = 'appcompat'
 }
 
