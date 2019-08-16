@@ -85,8 +85,8 @@ Using of _AppCompat_ is identical to _AndroidX_ except _InjectionHolder_ object.
 implementation 'com.github.chernovdmitriy.injectionholder:core:LATEST_VERSION'
 ```
 
-You should provide subclass of `InjectionHolder` and use it in your application instance
-Your components will be stayed alive automatically (This logic must be implements by `LifecycleCallbacksRegistry`)
+You should provide subclass of `InjectionHolder` and use it in your application instance.
+_DI components_ will be stayed alive automatically (This logic must be implements by `LifecycleCallbacksRegistry`)
 
 
 ## License
