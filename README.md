@@ -10,7 +10,7 @@ Finally, you can use it in any objects, that can be recreate
 
 ## Capabilities
 `Injection Holder` has next features:
-- Automated _DI component_ adding and clearing in Activity/Fragment without boilerplate code
+- Automated adding and clearing of _DI component_ in Activity/Fragment without boilerplate code
 - _DI Component_ stay alive after _Activity/Fragment_ recreation
 - Available for using in custom views
 - Support of _AppCompat_ & _AndroidX_
