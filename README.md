@@ -2,7 +2,7 @@
 ![VERSION](https://api.bintray.com/packages/chernovdmitriy/InjectionHolder/InjectionHolder/images/download.svg)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
 
-`Injection Holder` is a lightweight library that helps to to stay alive _DI components_ (sush as Dagger2 components) and any other objects. 
+`Injection Holder` is a lightweight library that helps _DI components_ (sush as Dagger2 components) and any other objects to stay alive. 
 It automatically works in _Activity/Fragment_ (with LifecycleCallback help)
 
 That's not all! :) You can use it in your _custom views_ and any objects, that can be recreate
@@ -26,7 +26,7 @@ First of all, you should register Activity/Fragment lifecycle callbacks at your 
 
 Then you can just implements `ComponentOwner<DiComponentType>` in your Fragment/Activity
 
-If you use _Java_ and/or Activity/Fragment instances of one class in one time, than you should overrides method `getComponentKey()` of `ComponentOwner`
+If you use _Java_ and/or Activity/Fragment instances of one class in one time, you should override method `getComponentKey()` of `ComponentOwner`
 
 Let's look at the sample
 ```kotlin
