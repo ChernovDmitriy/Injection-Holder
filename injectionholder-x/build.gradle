@@ -35,7 +35,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api 'com.github.chernovdmitriy.injectionholder:core:1.0.0'
+    api project(':injectionholder-core')
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
