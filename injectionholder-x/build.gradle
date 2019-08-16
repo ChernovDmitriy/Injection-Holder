@@ -4,8 +4,8 @@ apply plugin: 'kotlin-android'
 apply from: "$rootDir/jcenter/versioning.gradle"
 
 ext {
-    bintrayName = 'AndroidX'
-    libraryName = 'AndroidX'
+    bintrayName = 'InjectionHolder AndroidX'
+    libraryName = 'InjectionHolder AndroidX'
     artifact = 'androidx'
 }
 
