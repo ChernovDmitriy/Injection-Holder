@@ -69,6 +69,7 @@ class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
 
 And it's all what you need! You're welcome ;)
 
+
 **AppCompat**
 
 ```gradle
@@ -76,6 +77,7 @@ implementation 'com.github.chernovdmitriy.injectionholder:appcompat:LATEST_VERSI
 ```
 
 Using of _AppCompat_ is idential to _AndroidX_ except _InjectionHolder_ object. You just call `InjectionHolderAppCompat` instead of `InjectionHolderX`
+
 
 **Java/Kotlin**
 ```gradle
