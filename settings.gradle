@@ -1,1 +1,1 @@
-include ':injectionholder-x', ':injectionholder-appcompat', ':injectionholder-core', ':androidxsample', ':appcompatsample'
+include ':injectionholder-x', ':injectionholder-appcompat', ':core', ':androidxsample', ':appcompatsample'
