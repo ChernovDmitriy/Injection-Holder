@@ -2,7 +2,7 @@
 ![VERSION](https://api.bintray.com/packages/chernovdmitriy/InjectionHolder/InjectionHolder/images/download.svg)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
 
-`Injection Holder` is a lightweight library that helps _DI components_ (sush as Dagger2 components) and any other objects to stay alive. 
+`Injection Holder` is a lightweight library that helps _DI components_ (sush as Dagger2 components) to stay alive. 
 It automatically works in _Activity/Fragment_ (with LifecycleCallback help)
 
 That's not all! :) You can use it in your _custom views_ and any objects, that can be recreate
