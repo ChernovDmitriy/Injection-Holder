@@ -2,15 +2,17 @@
 ![VERSION](https://api.bintray.com/packages/chernovdmitriy/InjectionHolder/InjectionHolder/images/download.svg)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/licenses/MIT)
 
-`Injection Holder` is a lightweight library that helps _DI components_ (sush as Dagger2 components) to stay alive. 
-It automatically works in _Activity/Fragment_ (with LifecycleCallback help)
+`Injection Holder` is a lightweight library that helps _DI components_ (such as Dagger2 components) to stay alive during Activity/Fragment lifecycle. 
 
-That's not all! :) You can use it in your _custom views_ and any objects, that can be recreate
+Also you don't have worry about storing your DI components and operations with them such as adding/getting/removing.
+Just inject it!
+
+Finally, you can use it in any objects, that can be recreate
 
 ## Capabilities
 `Injection Holder` has next features:
 - _DI Component_ stay alive when _Activity/Fragment_ recreated
-- Automatic creating and destroying of _DI component_ in Activity/Fragment without boilerplate code
+- Automatic adding and clearing of _DI component_ in Activity/Fragment without boilerplate code
 - Also available for using in custom views
 - Support of _AppCompat_ & _AndroidX_
 - Can use in _Java_ modules
