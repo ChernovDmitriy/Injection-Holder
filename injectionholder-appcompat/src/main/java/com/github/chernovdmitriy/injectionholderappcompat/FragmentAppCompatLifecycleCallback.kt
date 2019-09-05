@@ -22,11 +22,6 @@ internal class FragmentAppCompatLifecycleCallback(
             }
             componentCallback.addInjection(fragment)
         }
-        fragment?.childFragmentManager
-            ?.registerFragmentLifecycleCallbacks(
-                FragmentAppCompatLifecycleCallback(componentCallback),
-                true
-            )
     }
 
     private fun removeInjectionIfNeed(fragment: Fragment?) {
