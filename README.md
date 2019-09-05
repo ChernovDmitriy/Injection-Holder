@@ -4,17 +4,17 @@
 
 `Injection Holder` is a lightweight library that helps _DI components_ (such as Dagger2 components) to stay alive during Activity/Fragment lifecycle. 
 
-Also you don't have worry about storing your DI components and operations with them such as adding/getting/removing etc.
+Also you don't have to worry about storing your DI components and operations with them such as adding/getting/removing etc.
 
 Finally, you can use it in any objects, that can be recreate
 
 ## Capabilities
 `Injection Holder` has next features:
-- _DI Component_ stay alive when _Activity/Fragment_ recreated
-- Automatic adding and clearing of _DI component_ in Activity/Fragment without boilerplate code
-- Also available for using in custom views
+- Automated adding and clearing of _DI component_ in Activity/Fragment without boilerplate code
+- _DI Component_ stay alive after _Activity/Fragment_ recreation
+- Available for using in custom views
 - Support of _AppCompat_ & _AndroidX_
-- Can use in _Java_ modules
+- Can be used in _Java_ modules
 
 ## Getting started
 
@@ -25,7 +25,7 @@ implementation 'com.github.chernovdmitriy.injectionholder:androidx:LATEST_VERSIO
 ```
 Let's look at the sample
 
-First of all, you should register Activity/Fragment lifecycle callbacks at your application start
+First of all, you will register Activity/Fragment lifecycle callbacks at launch of your application
 
 ```kotlin
 class MyApplication : Application() {
@@ -36,7 +36,7 @@ class MyApplication : Application() {
 }
 ```
 
-Then you can just implements `ComponentOwner<DiComponentType>` in your Fragment/Activity
+Then you just implements `ComponentOwner<DiComponentType>` interface in your Fragment/Activity
 ```kotlin
 class MyFragment : Fragment(), ComponentOwner<SubComponent> {
     override fun inject(subComponent: SubComponent) = subComponent.inject(this)
@@ -54,7 +54,6 @@ If you use _Java_ and/or Activity/Fragment instances of one class in one time, y
 
 ```kotlin
 class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
-
     override fun inject(subOfSubComponent: SubOfSubComponent) = subOfSubComponent.inject(this)
  
     override fun provideComponent(): SubOfSubComponent {
@@ -69,7 +68,9 @@ class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
 
 ```
 
-And it's all what you need! You're welcome ;)
+And that's all what you need! 
+
+You're welcome ;)
 
 
 **AppCompat**
@@ -86,8 +87,8 @@ Using of _AppCompat_ is identical to _AndroidX_ except _InjectionHolder_ object.
 implementation 'com.github.chernovdmitriy.injectionholder:core:LATEST_VERSION'
 ```
 
-You should realize class `InjectionHolder` and use it in your application instance
-Your components will be stay alive automatically (the logic of it you should realize in `LifecycleCallbacksRegistry`)
+You should provide subclass of `InjectionHolder` and use it in your application instance.
+_DI components_ will be stayed alive automatically (This logic must be implements by `LifecycleCallbacksRegistry`)
 
 
 ## License
