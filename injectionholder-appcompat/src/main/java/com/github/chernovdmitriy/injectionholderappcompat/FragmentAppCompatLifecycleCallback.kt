@@ -4,20 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-
 import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
-import java.util.concurrent.atomic.AtomicBoolean
 
 internal class FragmentAppCompatLifecycleCallback(
-    private val componentCallback: ComponentCallback
+    private val componentCallback: ComponentCallback,
+    private val fragmentStateStore: FragmentStateStore
 ) : FragmentManager.FragmentLifecycleCallbacks() {
-
-    private val isInSaveState = AtomicBoolean(false)
 
     private fun addInjectionIfNeed(fragment: Fragment?) {
         if (fragment is ComponentOwner<*>) {
-            if (!isInSaveState.get()) {
+            if (!isInSaveState(fragment)) {
                 componentCallback.removeInjection(fragment)
             }
             componentCallback.addInjection(fragment)
@@ -30,14 +27,13 @@ internal class FragmentAppCompatLifecycleCallback(
         }
 
         if (fragment.activity?.isFinishing == true) {
-            if (!isInSaveState.get()) {
+            if (!isInSaveState(fragment)) {
                 componentCallback.removeInjection(fragment)
             }
             return
         }
 
-        if (isInSaveState.get()) {
-            isInSaveState.set(false)
+        if (isInSaveState(fragment)) {
             return
         }
 
@@ -60,22 +56,27 @@ internal class FragmentAppCompatLifecycleCallback(
 
     override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
         super.onFragmentStarted(fm, f)
-        isInSaveState.set(false)
+        setSaveState(f, false)
     }
 
     override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
         super.onFragmentResumed(fm, f)
-        isInSaveState.set(false)
+        setSaveState(f, false)
     }
 
     override fun onFragmentSaveInstanceState(fm: FragmentManager, f: Fragment, outState: Bundle) {
         super.onFragmentSaveInstanceState(fm, f, outState)
-        isInSaveState.set(true)
+        setSaveState(f, true)
     }
 
     override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
         super.onFragmentDetached(fm, f)
         removeInjectionIfNeed(f)
     }
+
+    private fun isInSaveState(fragment: Fragment) = fragmentStateStore.getSaveState(fragment)
+
+    private fun setSaveState(fragment: Fragment, isInSaveState: Boolean) =
+        fragmentStateStore.setSaveState(fragment, isInSaveState)
 
 }

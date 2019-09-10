@@ -33,7 +33,8 @@ internal class ActivityXLifecycleCallback(
         (activity as? AppCompatActivity)
             ?.supportFragmentManager
             ?.registerFragmentLifecycleCallbacks(
-                SupportFragmentXLifecycleCallback(componentCallback), true
+                SupportFragmentXLifecycleCallback(componentCallback, FragmentStateStore.instance),
+                true
             )
     }
 
