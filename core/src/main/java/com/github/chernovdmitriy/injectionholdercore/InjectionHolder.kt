@@ -2,18 +2,20 @@ package com.github.chernovdmitriy.injectionholdercore
 
 import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
 import com.github.chernovdmitriy.injectionholdercore.registry.LifecycleCallbacksRegistry
-import com.github.chernovdmitriy.injectionholdercore.storage.ComponentsStore
+import com.github.chernovdmitriy.injectionholdercore.storage.ComponentStore
 
 abstract class InjectionHolder<ApplicationType>(
     private val lifecycleCallbacksRegistry: LifecycleCallbacksRegistry<ApplicationType>
 ) {
 
-    private val componentsStore by lazy { ComponentsStore() }
-
-    private val componentCallback: ComponentCallback by lazy { ComponentCallback(componentsStore) }
+    private val componentCallback: ComponentCallback by lazy {
+        ComponentCallback(ComponentStore())
+    }
 
     protected fun init(application: ApplicationType) =
         lifecycleCallbacksRegistry.registerLifecycleCallbacks(application, componentCallback)
+
+    fun addOwnerlessComponent(component: Any) = componentCallback.addOwnerlessComponent(component)
 
     fun removeComponent(componentClass: Class<*>) = componentCallback.removeComponent(componentClass)
 
@@ -28,6 +30,6 @@ abstract class InjectionHolder<ApplicationType>(
     fun <T> findComponent(
         componentClass: Class<T>,
         componentBuilder: (() -> T)? = null
-    ): T = componentsStore.findComponent(componentClass, componentBuilder)
+    ): T = componentCallback.findComponent(componentClass, componentBuilder)
 
 }

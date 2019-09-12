@@ -2,9 +2,9 @@ package com.github.chernovdmitriy.injectionholdercore.callback
 
 import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.ComponentOwnerLifecycle
-import com.github.chernovdmitriy.injectionholdercore.storage.ComponentsStore
+import com.github.chernovdmitriy.injectionholdercore.storage.ComponentStore
 
-class ComponentCallback internal constructor(private val componentsStore: ComponentsStore) {
+class ComponentCallback internal constructor(private val componentStore: ComponentStore) {
 
     fun <T> addInjection(componentOwner: ComponentOwner<T>) {
         val component = initOrGetComponent(componentOwner)
@@ -12,7 +12,7 @@ class ComponentCallback internal constructor(private val componentsStore: Compon
     }
 
     fun <T> removeInjection(componentOwner: ComponentOwner<T>) =
-        componentsStore.remove(componentOwner.getComponentKey())
+        componentStore.remove(componentOwner.getComponentKey())
 
     fun <T> getCustomOwnerLifecycle(owner: ComponentOwner<T>): ComponentOwnerLifecycle {
         return object : ComponentOwnerLifecycle {
@@ -35,22 +35,29 @@ class ComponentCallback internal constructor(private val componentsStore: Compon
         }
     }
 
-    fun <T> removeComponent(componentClass: Class<T>) = componentsStore.remove(componentClass)
+    fun addOwnerlessComponent(component: Any) = componentStore.addOwnerLessComponent(component)
+
+    fun <T> removeComponent(componentClass: Class<T>) = componentStore.remove(componentClass)
 
     fun <T> removeComponent(componentOwner: ComponentOwner<T>) =
-        componentsStore.remove(componentOwner.getComponentKey())
+        componentStore.remove(componentOwner.getComponentKey())
 
     @Suppress("UNCHECKED_CAST")
     fun <T> initOrGetComponent(owner: ComponentOwner<T>): T {
         val ownerKey = owner.getComponentKey()
 
-        return if (componentsStore.isExist(ownerKey)) {
-            componentsStore[ownerKey] as T
+        return if (componentStore.isExist(ownerKey)) {
+            componentStore[ownerKey] as T
         } else {
             owner.provideComponent().also { newComponent ->
-                componentsStore.add(ownerKey, newComponent as Any)
+                componentStore.add(ownerKey, newComponent as Any)
             }
         }
     }
+
+    fun <T> findComponent(
+        componentClass: Class<T>,
+        componentBuilder: (() -> T)? = null
+    ): T = componentStore.findComponent(componentClass, componentBuilder)
 
 }
