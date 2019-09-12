@@ -1,6 +1,6 @@
 int versionMajor = 1
 int versionMinor = 0
-int versionPatch = 4
+int versionPatch = 5
 boolean isSnapshot = false
 
 ext.getVersionCode = {
