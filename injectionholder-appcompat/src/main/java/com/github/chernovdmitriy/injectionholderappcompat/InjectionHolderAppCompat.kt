@@ -16,8 +16,14 @@ class InjectionHolderAppCompat private constructor() :
     }
 
     private class AppCompatLifecycleCallbacksRegistry : LifecycleCallbacksRegistry<Application> {
-        override fun registerLifecycleCallbacks(app: Application, componentCallback: ComponentCallback) =
-            app.registerActivityLifecycleCallbacks(ActivityAppCompatLifecycleCallback(componentCallback))
+        override fun registerLifecycleCallbacks(
+            app: Application,
+            componentCallback: ComponentCallback
+        ) =
+            app.registerActivityLifecycleCallbacks(
+                ActivityAppCompatLifecycleCallback(
+                    componentCallback
+                )
+            )
     }
-
 }

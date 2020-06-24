@@ -67,5 +67,4 @@ internal class ActivityXLifecycleCallback(
 
     override fun onActivityDestroyed(activity: Activity) {
     }
-
 }

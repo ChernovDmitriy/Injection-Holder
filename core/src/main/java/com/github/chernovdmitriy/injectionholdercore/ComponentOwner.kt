@@ -7,5 +7,4 @@ interface ComponentOwner<T> {
     fun getComponentKey(): String = javaClass.toString()
 
     fun inject(t: T)
-
 }

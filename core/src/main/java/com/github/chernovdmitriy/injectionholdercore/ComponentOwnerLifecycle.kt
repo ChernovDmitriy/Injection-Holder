@@ -5,5 +5,4 @@ interface ComponentOwnerLifecycle {
     fun onCreate()
 
     fun onFinishDestroy()
-
 }

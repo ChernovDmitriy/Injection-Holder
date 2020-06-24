@@ -21,5 +21,4 @@ internal class FragmentStateStore private constructor() {
 
     private fun Fragment.getComponentKey(): String? =
         (this as? ComponentOwner<*>)?.getComponentKey()
-
 }

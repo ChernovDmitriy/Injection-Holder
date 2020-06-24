@@ -18,5 +18,4 @@ class InjectionHolderX private constructor() : InjectionHolder<Application>(Andr
         override fun registerLifecycleCallbacks(app: Application, componentCallback: ComponentCallback) =
             app.registerActivityLifecycleCallbacks(ActivityXLifecycleCallback(componentCallback))
     }
-
 }

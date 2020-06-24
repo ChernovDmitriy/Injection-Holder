@@ -31,5 +31,4 @@ abstract class InjectionHolder<ApplicationType>(
         componentClass: Class<T>,
         componentBuilder: (() -> T)? = null
     ): T = componentCallback.findComponent(componentClass, componentBuilder)
-
 }

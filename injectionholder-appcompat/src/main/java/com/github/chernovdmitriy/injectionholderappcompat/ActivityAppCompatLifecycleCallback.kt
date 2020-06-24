@@ -67,5 +67,4 @@ internal class ActivityAppCompatLifecycleCallback(
 
     override fun onActivityDestroyed(activity: Activity) {
     }
-
 }

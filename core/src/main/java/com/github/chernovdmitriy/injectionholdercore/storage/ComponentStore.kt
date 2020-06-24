@@ -48,7 +48,6 @@ internal class ComponentStore {
         searchedClass: Class<T>,
         componentBuilder: (() -> T)?
     ): T {
-
         components.values.forEach { component ->
             if (component.isSameClass(searchedClass)) {
                 return component as T

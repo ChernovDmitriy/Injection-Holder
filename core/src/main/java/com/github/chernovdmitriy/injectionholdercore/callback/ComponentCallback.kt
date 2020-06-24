@@ -59,5 +59,4 @@ class ComponentCallback internal constructor(private val componentStore: Compone
         componentClass: Class<T>,
         componentBuilder: (() -> T)? = null
     ): T = componentStore.findComponent(componentClass, componentBuilder)
-
 }

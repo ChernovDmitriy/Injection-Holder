@@ -48,7 +48,6 @@ internal class FragmentAppCompatLifecycleCallback(
         }
     }
 
-
     override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
         addInjectionIfNeed(f)
         super.onFragmentAttached(fm, f, context)
@@ -78,5 +77,4 @@ internal class FragmentAppCompatLifecycleCallback(
 
     private fun setSaveState(fragment: Fragment, isInSaveState: Boolean) =
         fragmentStateStore.setSaveState(fragment, isInSaveState)
-
 }
