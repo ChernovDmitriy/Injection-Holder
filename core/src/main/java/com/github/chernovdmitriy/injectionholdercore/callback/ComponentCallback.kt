@@ -2,12 +2,30 @@ package com.github.chernovdmitriy.injectionholdercore.callback
 
 import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.ComponentOwnerLifecycle
+import com.github.chernovdmitriy.injectionholdercore.RestorableComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.genericCastOrNull
 import com.github.chernovdmitriy.injectionholdercore.storage.ComponentStore
 
 class ComponentCallback internal constructor(private val componentStore: ComponentStore) {
 
-    fun <T> addInjection(componentOwner: ComponentOwner<T>) {
-        val component = initOrGetComponent(componentOwner)
+    fun <SavedState, T> addInjection(
+        componentOwner: ComponentOwner<T>,
+        savedState: SavedState?
+    ) {
+        val ownerKey = componentOwner.getComponentKey()
+
+        @Suppress("UNCHECKED_CAST")
+        val component =
+            when {
+                componentStore.isExist(ownerKey) -> componentStore[ownerKey] as T
+                else -> {
+                    (genericCastOrNull<RestorableComponentOwner<SavedState, T>>(componentOwner)
+                        ?.provideComponent(savedState)
+                        ?: componentOwner.provideComponent())
+                        .also { componentStore.add(ownerKey, it as Any) }
+                }
+            }
+
         componentOwner.inject(component)
     }
 
@@ -21,7 +39,7 @@ class ComponentCallback internal constructor(private val componentStore: Compone
 
             override fun onCreate() {
                 if (!isInjected) {
-                    addInjection(owner)
+                    addInjection(owner, null)
                     isInjected = true
                 }
             }
@@ -35,13 +53,6 @@ class ComponentCallback internal constructor(private val componentStore: Compone
         }
     }
 
-    fun addOwnerlessComponent(component: Any) = componentStore.addOwnerLessComponent(component)
-
-    fun <T> removeComponent(componentClass: Class<T>) = componentStore.remove(componentClass)
-
-    fun <T> removeComponent(componentOwner: ComponentOwner<T>) =
-        componentStore.remove(componentOwner.getComponentKey())
-
     @Suppress("UNCHECKED_CAST")
     fun <T> initOrGetComponent(owner: ComponentOwner<T>): T {
         val ownerKey = owner.getComponentKey()
@@ -49,14 +60,14 @@ class ComponentCallback internal constructor(private val componentStore: Compone
         return if (componentStore.isExist(ownerKey)) {
             componentStore[ownerKey] as T
         } else {
-            owner.provideComponent().also { newComponent ->
-                componentStore.add(ownerKey, newComponent as Any)
-            }
+            (genericCastOrNull<RestorableComponentOwner<Any?, T>>(owner)
+                ?.provideComponent(null)
+                ?: owner.provideComponent())
+                .also { componentStore.add(ownerKey, it as Any) }
         }
     }
 
     fun <T> findComponent(
-        componentClass: Class<T>,
-        componentBuilder: (() -> T)? = null
-    ): T = componentStore.findComponent(componentClass, componentBuilder)
+        componentClass: Class<T>
+    ): T? = componentStore.findComponent(componentClass)
 }

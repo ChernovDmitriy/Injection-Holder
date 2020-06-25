@@ -27,7 +27,7 @@ internal class ActivityXLifecycleCallback(
             if (isFirstLaunch(outState)) {
                 componentCallback.removeInjection(activity)
             }
-            componentCallback.addInjection(activity)
+            componentCallback.addInjection(activity, outState)
         }
 
         (activity as? AppCompatActivity)

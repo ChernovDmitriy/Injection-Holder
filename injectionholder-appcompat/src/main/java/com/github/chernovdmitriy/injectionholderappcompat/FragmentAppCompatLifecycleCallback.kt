@@ -12,12 +12,14 @@ internal class FragmentAppCompatLifecycleCallback(
     private val fragmentStateStore: FragmentStateStore
 ) : FragmentManager.FragmentLifecycleCallbacks() {
 
+    private var bundle: Bundle? = null
+
     private fun addInjectionIfNeed(fragment: Fragment?) {
         if (fragment is ComponentOwner<*>) {
             if (!isInSaveState(fragment)) {
                 componentCallback.removeInjection(fragment)
             }
-            componentCallback.addInjection(fragment)
+            componentCallback.addInjection(fragment, bundle ?: fragment.arguments)
         }
     }
 
@@ -28,7 +30,7 @@ internal class FragmentAppCompatLifecycleCallback(
 
         if (fragment.activity?.isFinishing == true) {
             if (!isInSaveState(fragment)) {
-                componentCallback.removeInjection(fragment)
+                clearInjection(fragment)
             }
             return
         }
@@ -44,8 +46,19 @@ internal class FragmentAppCompatLifecycleCallback(
             parent = parent.parentFragment
         }
         if (fragment.isRemoving || anyParentIsRemoving) {
-            componentCallback.removeInjection(fragment)
+            clearInjection(fragment)
         }
+    }
+
+    private fun clearInjection(fragment: Fragment) {
+        (fragment as? ComponentOwner<*>)?.apply { componentCallback.removeInjection(this) }
+        clearSaveState(fragment)
+        bundle = null
+    }
+
+    override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
+        super.onFragmentCreated(fm, f, savedInstanceState)
+        bundle = savedInstanceState
     }
 
     override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
@@ -55,17 +68,18 @@ internal class FragmentAppCompatLifecycleCallback(
 
     override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
         super.onFragmentStarted(fm, f)
-        setSaveState(f, false)
+        clearSaveState(f)
     }
 
     override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
         super.onFragmentResumed(fm, f)
-        setSaveState(f, false)
+        clearSaveState(f)
     }
 
     override fun onFragmentSaveInstanceState(fm: FragmentManager, f: Fragment, outState: Bundle) {
         super.onFragmentSaveInstanceState(fm, f, outState)
-        setSaveState(f, true)
+        saveFragmentState(f)
+        bundle = outState
     }
 
     override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
@@ -75,6 +89,7 @@ internal class FragmentAppCompatLifecycleCallback(
 
     private fun isInSaveState(fragment: Fragment) = fragmentStateStore.getSaveState(fragment)
 
-    private fun setSaveState(fragment: Fragment, isInSaveState: Boolean) =
-        fragmentStateStore.setSaveState(fragment, isInSaveState)
+    private fun saveFragmentState(fragment: Fragment) = fragmentStateStore.setSaveState(fragment, true)
+
+    private fun clearSaveState(fragment: Fragment) = fragmentStateStore.setSaveState(fragment, false)
 }
