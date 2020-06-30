@@ -15,7 +15,7 @@ abstract class InjectionHolder<ApplicationType>(
     protected fun init(application: ApplicationType) =
         lifecycleCallbacksRegistry.registerLifecycleCallbacks(application, componentCallback)
 
-    fun <T> getComponent(owner: ComponentOwner<T>): T = componentCallback.initOrGetComponent(owner)
+    fun <T> getComponent(owner: ComponentOwner<T>): T = componentCallback.initOrGetComponent(owner, null)
 
     fun <T> getComponentOwnerLifeCycle(componentOwner: ComponentOwner<T>): ComponentOwnerLifecycle =
         componentCallback.getCustomOwnerLifecycle(componentOwner)

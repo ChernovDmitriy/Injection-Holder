@@ -12,8 +12,6 @@ internal class ComponentStore {
 
     fun remove(key: String) = components.remove(key)
 
-    fun isExist(key: String) = components.containsKey(key)
-
     @Suppress("UNCHECKED_CAST")
     fun <T> findComponent(searchedClass: Class<T>): T? =
         components.values.firstOrNull { it.isSameClass(searchedClass) } as? T

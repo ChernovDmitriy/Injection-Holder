@@ -12,20 +12,7 @@ class ComponentCallback internal constructor(private val componentStore: Compone
         componentOwner: ComponentOwner<T>,
         savedState: SavedState?
     ) {
-        val ownerKey = componentOwner.getComponentKey()
-
-        @Suppress("UNCHECKED_CAST")
-        val component =
-            when {
-                componentStore.isExist(ownerKey) -> componentStore[ownerKey] as T
-                else -> {
-                    (genericCastOrNull<RestorableComponentOwner<SavedState, T>>(componentOwner)
-                        ?.provideComponent(savedState)
-                        ?: componentOwner.provideComponent())
-                        .also { componentStore.add(ownerKey, it as Any) }
-                }
-            }
-
+        val component = initOrGetComponent(componentOwner, savedState)
         componentOwner.inject(component)
     }
 
@@ -54,20 +41,23 @@ class ComponentCallback internal constructor(private val componentStore: Compone
     }
 
     @Suppress("UNCHECKED_CAST")
-    fun <T> initOrGetComponent(owner: ComponentOwner<T>): T {
-        val ownerKey = owner.getComponentKey()
-
-        return if (componentStore.isExist(ownerKey)) {
-            componentStore[ownerKey] as T
-        } else {
-            (genericCastOrNull<RestorableComponentOwner<Any?, T>>(owner)
-                ?.provideComponent(null)
-                ?: owner.provideComponent())
-                .also { componentStore.add(ownerKey, it as Any) }
-        }
+    fun <SavedState, T> initOrGetComponent(
+        componentOwner: ComponentOwner<T>,
+        savedState: SavedState?
+    ): T {
+        val key = componentOwner.getComponentKey()
+        return componentStore[key] as? T
+            ?: initComponent(componentOwner, savedState).also { componentStore.add(key, it as Any) }
     }
 
-    fun <T> findComponent(
-        componentClass: Class<T>
-    ): T? = componentStore.findComponent(componentClass)
+    private fun <SavedState, T> initComponent(
+        componentOwner: ComponentOwner<T>,
+        savedState: SavedState?
+    ): T {
+        return genericCastOrNull<RestorableComponentOwner<SavedState, T>>(componentOwner)
+            ?.provideComponent(savedState)
+            ?: componentOwner.provideComponent()
+    }
+
+    fun <T> findComponent(componentClass: Class<T>): T? = componentStore.findComponent(componentClass)
 }
