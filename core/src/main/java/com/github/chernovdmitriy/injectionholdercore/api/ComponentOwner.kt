@@ -1,4 +1,4 @@
-package com.github.chernovdmitriy.injectionholdercore
+package com.github.chernovdmitriy.injectionholdercore.api
 
 interface ComponentOwner<T> {
 

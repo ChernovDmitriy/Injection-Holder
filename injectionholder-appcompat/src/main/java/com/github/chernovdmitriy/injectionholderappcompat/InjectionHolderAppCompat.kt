@@ -1,9 +1,10 @@
 package com.github.chernovdmitriy.injectionholderappcompat
 
 import android.app.Application
+import com.github.chernovdmitriy.injectionholderappcompat.internal.ActivityAppCompatLifecycleCallback
 import com.github.chernovdmitriy.injectionholdercore.InjectionHolder
-import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
-import com.github.chernovdmitriy.injectionholdercore.registry.LifecycleCallbacksRegistry
+import com.github.chernovdmitriy.injectionholdercore.api.LifecycleCallbacksRegistry
+import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
 
 class InjectionHolderAppCompat private constructor() :
     InjectionHolder<Application>(AppCompatLifecycleCallbacksRegistry()) {
@@ -16,14 +17,7 @@ class InjectionHolderAppCompat private constructor() :
     }
 
     private class AppCompatLifecycleCallbacksRegistry : LifecycleCallbacksRegistry<Application> {
-        override fun registerLifecycleCallbacks(
-            app: Application,
-            componentCallback: ComponentCallback
-        ) =
-            app.registerActivityLifecycleCallbacks(
-                ActivityAppCompatLifecycleCallback(
-                    componentCallback
-                )
-            )
+        override fun registerLifecycleCallbacks(app: Application, componentManager: ComponentManager) =
+            app.registerActivityLifecycleCallbacks(ActivityAppCompatLifecycleCallback(componentManager))
     }
 }

@@ -1,12 +1,11 @@
-package com.github.chernovdmitriy.injectionholdercore.callback
+package com.github.chernovdmitriy.injectionholdercore.internal.manager
 
-import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
-import com.github.chernovdmitriy.injectionholdercore.ComponentOwnerLifecycle
-import com.github.chernovdmitriy.injectionholdercore.RestorableComponentOwner
-import com.github.chernovdmitriy.injectionholdercore.genericCastOrNull
-import com.github.chernovdmitriy.injectionholdercore.storage.ComponentStore
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwnerLifecycle
+import com.github.chernovdmitriy.injectionholdercore.api.RestorableComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.internal.utils.genericCastOrNull
 
-class ComponentCallback internal constructor(private val componentStore: ComponentStore) {
+class ComponentManager internal constructor(private val componentStore: ComponentStore) {
 
     fun <SavedState, T> addInjection(
         componentOwner: ComponentOwner<T>,

@@ -2,8 +2,9 @@ package com.github.chernovdmitriy.injectionholderx
 
 import android.app.Application
 import com.github.chernovdmitriy.injectionholdercore.InjectionHolder
-import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
-import com.github.chernovdmitriy.injectionholdercore.registry.LifecycleCallbacksRegistry
+import com.github.chernovdmitriy.injectionholdercore.api.LifecycleCallbacksRegistry
+import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
+import com.github.chernovdmitriy.injectionholderx.internal.ActivityXLifecycleCallback
 
 class InjectionHolderX private constructor() : InjectionHolder<Application>(AndroidXLifecycleCallbacksRegistry()) {
 
@@ -15,7 +16,7 @@ class InjectionHolderX private constructor() : InjectionHolder<Application>(Andr
     }
 
     private class AndroidXLifecycleCallbacksRegistry : LifecycleCallbacksRegistry<Application> {
-        override fun registerLifecycleCallbacks(app: Application, componentCallback: ComponentCallback) =
-            app.registerActivityLifecycleCallbacks(ActivityXLifecycleCallback(componentCallback))
+        override fun registerLifecycleCallbacks(app: Application, componentManager: ComponentManager) =
+            app.registerActivityLifecycleCallbacks(ActivityXLifecycleCallback(componentManager))
     }
 }

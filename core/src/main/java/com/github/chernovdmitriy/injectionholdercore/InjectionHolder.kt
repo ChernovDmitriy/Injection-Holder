@@ -1,24 +1,24 @@
 package com.github.chernovdmitriy.injectionholdercore
 
-import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
-import com.github.chernovdmitriy.injectionholdercore.registry.LifecycleCallbacksRegistry
-import com.github.chernovdmitriy.injectionholdercore.storage.ComponentStore
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwnerLifecycle
+import com.github.chernovdmitriy.injectionholdercore.api.LifecycleCallbacksRegistry
+import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
+import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentStore
 
 abstract class InjectionHolder<ApplicationType>(
     private val lifecycleCallbacksRegistry: LifecycleCallbacksRegistry<ApplicationType>
 ) {
 
-    private val componentCallback: ComponentCallback by lazy {
-        ComponentCallback(ComponentStore())
-    }
+    private val componentManager: ComponentManager by lazy { ComponentManager(ComponentStore()) }
 
     protected fun init(application: ApplicationType) =
-        lifecycleCallbacksRegistry.registerLifecycleCallbacks(application, componentCallback)
+        lifecycleCallbacksRegistry.registerLifecycleCallbacks(application, componentManager)
 
-    fun <T> getComponent(owner: ComponentOwner<T>): T = componentCallback.initOrGetComponent(owner, null)
+    fun <T> getComponent(owner: ComponentOwner<T>): T = componentManager.initOrGetComponent(owner, null)
 
     fun <T> getComponentOwnerLifeCycle(componentOwner: ComponentOwner<T>): ComponentOwnerLifecycle =
-        componentCallback.getCustomOwnerLifecycle(componentOwner)
+        componentManager.getCustomOwnerLifecycle(componentOwner)
 
-    fun <T> findComponent(componentClass: Class<T>): T? = componentCallback.findComponent(componentClass)
+    fun <T> findComponent(componentClass: Class<T>): T? = componentManager.findComponent(componentClass)
 }

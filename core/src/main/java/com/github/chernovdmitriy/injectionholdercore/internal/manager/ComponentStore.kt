@@ -1,4 +1,6 @@
-package com.github.chernovdmitriy.injectionholdercore.storage
+package com.github.chernovdmitriy.injectionholdercore.internal.manager
+
+import com.github.chernovdmitriy.injectionholdercore.internal.utils.isSameClass
 
 internal class ComponentStore {
 
@@ -15,7 +17,4 @@ internal class ComponentStore {
     @Suppress("UNCHECKED_CAST")
     fun <T> findComponent(searchedClass: Class<T>): T? =
         components.values.firstOrNull { it.isSameClass(searchedClass) } as? T
-
-    private fun Any.isSameClass(otherClass: Class<*>): Boolean =
-        otherClass.isAssignableFrom(javaClass) || javaClass.isAssignableFrom(otherClass)
 }

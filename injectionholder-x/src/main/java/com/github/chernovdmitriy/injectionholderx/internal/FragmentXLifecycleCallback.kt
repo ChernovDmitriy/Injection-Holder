@@ -1,14 +1,14 @@
-package com.github.chernovdmitriy.injectionholderappcompat
+package com.github.chernovdmitriy.injectionholderx.internal
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
-import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
 
-internal class FragmentAppCompatLifecycleCallback(
-    private val componentCallback: ComponentCallback,
+internal class FragmentXLifecycleCallback(
+    private val componentManager: ComponentManager,
     private val fragmentStateStore: FragmentStateStore
 ) : FragmentManager.FragmentLifecycleCallbacks() {
 
@@ -17,9 +17,9 @@ internal class FragmentAppCompatLifecycleCallback(
     private fun addInjectionIfNeed(fragment: Fragment?) {
         if (fragment is ComponentOwner<*>) {
             if (!isInSaveState(fragment)) {
-                componentCallback.removeInjection(fragment)
+                componentManager.removeInjection(fragment)
             }
-            componentCallback.addInjection(fragment, bundle ?: fragment.arguments)
+            componentManager.addInjection(fragment, bundle ?: fragment.arguments)
         }
     }
 
@@ -51,7 +51,7 @@ internal class FragmentAppCompatLifecycleCallback(
     }
 
     private fun clearInjection(fragment: Fragment) {
-        (fragment as? ComponentOwner<*>)?.apply { componentCallback.removeInjection(this) }
+        (fragment as? ComponentOwner<*>)?.apply { componentManager.removeInjection(this) }
         clearSaveState(fragment)
         bundle = null
     }

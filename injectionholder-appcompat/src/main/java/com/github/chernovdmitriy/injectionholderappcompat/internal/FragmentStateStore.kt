@@ -1,7 +1,7 @@
-package com.github.chernovdmitriy.injectionholderappcompat
+package com.github.chernovdmitriy.injectionholderappcompat.internal
 
 import android.support.v4.app.Fragment
-import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
 
 internal class FragmentStateStore private constructor() {
 

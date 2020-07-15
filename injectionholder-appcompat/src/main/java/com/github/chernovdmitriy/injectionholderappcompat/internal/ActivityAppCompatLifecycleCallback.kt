@@ -1,18 +1,18 @@
-package com.github.chernovdmitriy.injectionholderx
+package com.github.chernovdmitriy.injectionholderappcompat.internal
 
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.github.chernovdmitriy.injectionholdercore.ComponentOwner
-import com.github.chernovdmitriy.injectionholdercore.callback.ComponentCallback
+import android.support.v7.app.AppCompatActivity
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
+import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
 
-internal class ActivityXLifecycleCallback(
-    private val componentCallback: ComponentCallback
+internal class ActivityAppCompatLifecycleCallback(
+    private val componentManager: ComponentManager
 ) : Application.ActivityLifecycleCallbacks {
 
     private companion object {
-        const val IS_FIRST_LAUNCH = "com.github.chernovdmitriy.injectionholderx.IS_FIRST_LAUNCH"
+        const val IS_FIRST_LAUNCH = "com.github.chernovdmitriy.injectionholderappcompat.IS_FIRST_LAUNCH"
     }
 
     private fun isFirstLaunch(outState: Bundle?): Boolean =
@@ -25,22 +25,25 @@ internal class ActivityXLifecycleCallback(
     private fun addInjectionIfNeed(activity: Activity, outState: Bundle?) {
         if (activity is ComponentOwner<*>) {
             if (isFirstLaunch(outState)) {
-                componentCallback.removeInjection(activity)
+                componentManager.removeInjection(activity)
             }
-            componentCallback.addInjection(activity, outState)
+            componentManager.addInjection(activity, outState)
         }
 
         (activity as? AppCompatActivity)
             ?.supportFragmentManager
             ?.registerFragmentLifecycleCallbacks(
-                SupportFragmentXLifecycleCallback(componentCallback, FragmentStateStore.instance),
+                FragmentAppCompatLifecycleCallback(
+                    componentManager,
+                    FragmentStateStore.instance
+                ),
                 true
             )
     }
 
     private fun removeInjectionIfNeed(activity: Activity) {
         if (activity is ComponentOwner<*> && activity.isFinishing) {
-            componentCallback.removeInjection(activity)
+            componentManager.removeInjection(activity)
         }
     }
 
