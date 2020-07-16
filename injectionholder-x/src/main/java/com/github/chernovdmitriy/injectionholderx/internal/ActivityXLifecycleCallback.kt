@@ -4,15 +4,15 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentManager
 import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
-import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
 
 internal class ActivityXLifecycleCallback(
     private val componentManager: ComponentManager
 ) : Application.ActivityLifecycleCallbacks {
 
     private companion object {
-        const val IS_FIRST_LAUNCH = "com.github.chernovdmitriy.injectionholderx.IS_FIRST_LAUNCH"
+        const val IS_FIRST_LAUNCH = "com.github.chernovdmitriy.injectionholderx.internal.IS_FIRST_LAUNCH"
     }
 
     private fun isFirstLaunch(outState: Bundle?): Boolean =
@@ -33,10 +33,7 @@ internal class ActivityXLifecycleCallback(
         (activity as? AppCompatActivity)
             ?.supportFragmentManager
             ?.registerFragmentLifecycleCallbacks(
-                FragmentXLifecycleCallback(
-                    componentManager,
-                    FragmentStateStore.instance
-                ),
+                FragmentXLifecycleCallback(componentManager, FragmentStateStore.instance),
                 true
             )
     }

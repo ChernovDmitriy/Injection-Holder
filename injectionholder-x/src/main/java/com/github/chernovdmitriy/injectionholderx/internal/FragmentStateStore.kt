@@ -6,6 +6,7 @@ import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
 internal class FragmentStateStore private constructor() {
 
     companion object {
+        @JvmStatic
         val instance by lazy { FragmentStateStore() }
     }
 

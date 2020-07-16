@@ -1,25 +1,49 @@
 package com.github.chernovdmitriy.injectionholderappcompat.internal
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import com.github.chernovdmitriy.injectionholdercore.api.ComponentManager
 import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
-import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManager
 
 internal class FragmentAppCompatLifecycleCallback(
     private val componentManager: ComponentManager,
     private val fragmentStateStore: FragmentStateStore
 ) : FragmentManager.FragmentLifecycleCallbacks() {
 
-    private var bundle: Bundle? = null
+    override fun onFragmentPreCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
+        super.onFragmentPreCreated(fm, f, savedInstanceState)
+        addInjectionIfNeed(f, savedInstanceState)
+    }
 
-    private fun addInjectionIfNeed(fragment: Fragment?) {
+    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
+        println("onFragmentStarted, fm: $fm, f: $f")
+        super.onFragmentStarted(fm, f)
+        clearSaveState(f)
+    }
+
+    override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+        println("onFragmentResumed, fm: $fm, f: $f")
+        super.onFragmentResumed(fm, f)
+        clearSaveState(f)
+    }
+
+    override fun onFragmentSaveInstanceState(fm: FragmentManager, f: Fragment, outState: Bundle) {
+        super.onFragmentSaveInstanceState(fm, f, outState)
+        saveFragmentState(f)
+    }
+
+    override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
+        super.onFragmentDestroyed(fm, f)
+        removeInjectionIfNeed(f)
+    }
+
+    private fun addInjectionIfNeed(fragment: Fragment, savedInstanceState: Bundle?) {
         if (fragment is ComponentOwner<*>) {
             if (!isInSaveState(fragment)) {
                 componentManager.removeInjection(fragment)
             }
-            componentManager.addInjection(fragment, bundle ?: fragment.arguments)
+            componentManager.addInjection(fragment, savedInstanceState ?: fragment.arguments)
         }
     }
 
@@ -53,38 +77,6 @@ internal class FragmentAppCompatLifecycleCallback(
     private fun clearInjection(fragment: Fragment) {
         (fragment as? ComponentOwner<*>)?.apply { componentManager.removeInjection(this) }
         clearSaveState(fragment)
-        bundle = null
-    }
-
-    override fun onFragmentCreated(fm: FragmentManager, f: Fragment, savedInstanceState: Bundle?) {
-        super.onFragmentCreated(fm, f, savedInstanceState)
-        bundle = savedInstanceState
-    }
-
-    override fun onFragmentAttached(fm: FragmentManager, f: Fragment, context: Context) {
-        addInjectionIfNeed(f)
-        super.onFragmentAttached(fm, f, context)
-    }
-
-    override fun onFragmentStarted(fm: FragmentManager, f: Fragment) {
-        super.onFragmentStarted(fm, f)
-        clearSaveState(f)
-    }
-
-    override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
-        super.onFragmentResumed(fm, f)
-        clearSaveState(f)
-    }
-
-    override fun onFragmentSaveInstanceState(fm: FragmentManager, f: Fragment, outState: Bundle) {
-        super.onFragmentSaveInstanceState(fm, f, outState)
-        saveFragmentState(f)
-        bundle = outState
-    }
-
-    override fun onFragmentDetached(fm: FragmentManager, f: Fragment) {
-        super.onFragmentDetached(fm, f)
-        removeInjectionIfNeed(f)
     }
 
     private fun isInSaveState(fragment: Fragment) = fragmentStateStore.getSaveState(fragment)
