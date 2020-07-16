@@ -49,6 +49,18 @@ class MyFragment : Fragment(), ComponentOwner<SubComponent> {
     }
 }
 ```
+Additionally, since __1.1.0__ version interface `BundleComponentOwner` has been added, which give access to Bundle of your savedInstanceState (if Activity/Fragment have been restored) at component providing.
+In that case your code will looks similarly simple
+```kotlin
+class MyFragment : Fragment(), BundleComponentOwner<MyComponent> {
+    override fun inject(myComponent: MyComponent) = myComponent.inject(this)
+ 
+    override fun provideComponent(savedState: Bundle?): MyComponent {
+        val savedStateString: String? = savedState?.getString(ARGUMENT_SAMPLE_KEY)
+        return MyComponentProvider.getInstance(savedStateString).myComponent
+    }
+}
+```
 
 If you use _Java_ and/or Activity/Fragment instances of one class in one time, you should override method `getComponentKey()` of `ComponentOwner`
 
