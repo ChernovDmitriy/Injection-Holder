@@ -6,15 +6,7 @@ import com.github.chernovdmitriy.injectionholdercore.InjectionHolder
 import com.github.chernovdmitriy.injectionholdercore.api.ComponentManager
 import com.github.chernovdmitriy.injectionholdercore.api.LifecycleCallbacksRegistry
 
-class InjectionHolderAppCompat private constructor() :
-    InjectionHolder<Application>(AppCompatLifecycleCallbacksRegistry()) {
-
-    companion object {
-        @JvmStatic
-        val instance by lazy { InjectionHolderAppCompat() }
-
-        fun init(application: Application) = instance.init(application)
-    }
+object InjectionHolderAppCompat : InjectionHolder<Application>(AppCompatLifecycleCallbacksRegistry()) {
 
     private class AppCompatLifecycleCallbacksRegistry : LifecycleCallbacksRegistry<Application> {
         override fun registerLifecycleCallbacks(app: Application, componentManager: ComponentManager) =

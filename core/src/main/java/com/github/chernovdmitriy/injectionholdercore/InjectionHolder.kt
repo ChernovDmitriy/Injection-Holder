@@ -5,15 +5,14 @@ import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwnerLifecycle
 import com.github.chernovdmitriy.injectionholdercore.api.LifecycleCallbacksRegistry
 import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentManagerImpl
-import com.github.chernovdmitriy.injectionholdercore.internal.manager.ComponentStore
 
 abstract class InjectionHolder<ApplicationType>(
     private val lifecycleCallbacksRegistry: LifecycleCallbacksRegistry<ApplicationType>
 ) {
 
-    private val componentManager: ComponentManager by lazy { ComponentManagerImpl(ComponentStore()) }
+    private val componentManager: ComponentManager by lazy { ComponentManagerImpl() }
 
-    protected fun init(application: ApplicationType) =
+    fun init(application: ApplicationType) =
         lifecycleCallbacksRegistry.registerLifecycleCallbacks(application, componentManager)
 
     fun <T> getComponentOwnerLifeCycle(componentOwner: ComponentOwner<T>): ComponentOwnerLifecycle =
