@@ -42,7 +42,7 @@ class MyFragment : Fragment(), ComponentOwner<SubComponent> {
     override fun inject(subComponent: SubComponent) = subComponent.inject(this)
  
     override fun provideComponent(): SubComponent {
-        return InjectionHolderX.instance
+        return InjectionHolderX
             .findComponent(ParentComponent::class.java)
             .subComponentBuilder()
             .build()
@@ -69,7 +69,7 @@ class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
     override fun inject(subOfSubComponent: SubOfSubComponent) = subOfSubComponent.inject(this)
  
     override fun provideComponent(): SubOfSubComponent {
-        return InjectionHolderX.instance
+        return InjectionHolderX
             .findComponent(SubComponent::class.java)
             .subOfSubComponentBuilder()
             .build()
