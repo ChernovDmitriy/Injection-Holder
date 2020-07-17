@@ -42,10 +42,22 @@ class MyFragment : Fragment(), ComponentOwner<SubComponent> {
     override fun inject(subComponent: SubComponent) = subComponent.inject(this)
  
     override fun provideComponent(): SubComponent {
-        return InjectionHolderX.instance
+        return InjectionHolderX
             .findComponent(ParentComponent::class.java)
             .subComponentBuilder()
             .build()
+    }
+}
+```
+Additionally, since __1.1.0__ version interface `BundleComponentOwner` has been added, which give access to Bundle of your savedInstanceState (if Activity/Fragment have been restored) at component providing.
+In that case your code will looks similarly simple
+```kotlin
+class MyFragment : Fragment(), BundleComponentOwner<MyComponent> {
+    override fun inject(myComponent: MyComponent) = myComponent.inject(this)
+ 
+    override fun provideComponent(savedState: Bundle?): MyComponent {
+        val savedStateString: String? = savedState?.getString(ARGUMENT_SAMPLE_KEY)
+        return MyComponentProvider.getInstance(savedStateString).myComponent
     }
 }
 ```
@@ -57,7 +69,7 @@ class SomeFeatureBaseFragment : Fragment(), ComponentOwner<SubOfSubComponent> {
     override fun inject(subOfSubComponent: SubOfSubComponent) = subOfSubComponent.inject(this)
  
     override fun provideComponent(): SubOfSubComponent {
-        return InjectionHolderX.instance
+        return InjectionHolderX
             .findComponent(SubComponent::class.java)
             .subOfSubComponentBuilder()
             .build()

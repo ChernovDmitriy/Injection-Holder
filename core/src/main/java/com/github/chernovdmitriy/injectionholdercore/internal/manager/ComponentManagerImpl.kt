@@ -5,10 +5,15 @@ import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.api.ComponentOwnerLifecycle
 import com.github.chernovdmitriy.injectionholdercore.api.RestorableComponentOwner
 import com.github.chernovdmitriy.injectionholdercore.internal.utils.genericCastOrNull
+import com.github.chernovdmitriy.injectionholdercore.internal.utils.isSameClass
 
-internal class ComponentManagerImpl(private val componentStore: ComponentStore) : ComponentManager {
+internal class ComponentManagerImpl : ComponentManager {
 
-    override fun <T> findComponent(componentClass: Class<T>): T? = componentStore.findComponent(componentClass)
+    private val components = hashMapOf<String, Any>()
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> findComponent(componentClass: Class<T>): T? =
+        components.values.firstOrNull { it.isSameClass(componentClass) } as? T
 
     override fun <T> getComponentOwnerLifecycle(owner: ComponentOwner<T>): ComponentOwnerLifecycle {
         return object : ComponentOwnerLifecycle {
@@ -37,7 +42,7 @@ internal class ComponentManagerImpl(private val componentStore: ComponentStore) 
     }
 
     override fun <T> removeInjection(componentOwner: ComponentOwner<T>) {
-        componentStore.remove(componentOwner.getComponentKey())
+        components.remove(componentOwner.getComponentKey())
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -45,9 +50,10 @@ internal class ComponentManagerImpl(private val componentStore: ComponentStore) 
         componentOwner: ComponentOwner<T>,
         savedState: SavedState?
     ): T {
+
         val key = componentOwner.getComponentKey()
-        return componentStore[key] as? T
-            ?: initComponent(componentOwner, savedState).also { componentStore.add(key, it as Any) }
+        return components[key] as? T
+            ?: initComponent(componentOwner, savedState).also { components[key] = it as Any }
     }
 
     private fun <SavedState, T> initComponent(
@@ -58,5 +64,4 @@ internal class ComponentManagerImpl(private val componentStore: ComponentStore) 
             ?.provideComponent(savedState)
             ?: componentOwner.provideComponent()
     }
-
 }
